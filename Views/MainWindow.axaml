@@ -31,7 +31,7 @@
                                 Padding="12,8">
                             <Grid ColumnDefinitions="Auto,*,Auto">
                                 <CheckBox Grid.Column="0"
-                                          IsChecked="{Bindinjg IsCompleted}"
+                                          IsChecked="{Binding IsCompleted}"
                                           VerticalAlignment="Center" />
                                 <TextBlock Grid.Column="1"
                                            Text="{Binding Title}"
