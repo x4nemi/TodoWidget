@@ -9,9 +9,9 @@ public partial class MainWindowViewModel : ObservableObject
 {
     public ObservableCollection<TodoItem> Todos { get; } = new ObservableCollection<TodoItem>
     {
-        new TodoItem { Title = "Buy groceries" },
-        new TodoItem { Title = "Walk the dog" },
-        new TodoItem { Title = "Finish project" }
+        new TodoItem { Title = "Buy groceries", Priority = 1 },
+        new TodoItem { Title = "Walk the dog", Priority = 2 },
+        new TodoItem { Title = "Finish project", Priority = 3 }
     };
 
     [ObservableProperty]
@@ -21,7 +21,8 @@ public partial class MainWindowViewModel : ObservableObject
     [RelayCommand(CanExecute = nameof(CanAddTodo))]
     private void AddTodo()
     {
-        Todos.Add(new TodoItem { Title = NewTodoText.Trim() });
+        var lastPriority = Todos.Count > 0 ? Todos.Max(t => t.Priority) : 0;
+        Todos.Add(new TodoItem { Title = NewTodoText.Trim(), Priority = lastPriority + 1 });
         NewTodoText = string.Empty;
     }
 
