@@ -1,0 +1,71 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:TodoApp.ViewModels"
+        xmlns:conv="using:TodoApp.Converters"
+        x:Class="TodoApp.Views.MainWindow"
+        Title="TodoApp" Width="500" 
+        WindowStartupLocation="CenterScreen">
+
+    <Window.DataContext>
+        <vm:MainWindowViewModel />
+    </Window.DataContext>
+
+    <Window.Resources>
+        <conv:BoolToStrikethroughConverter x:Key="BoolToStrikethrough" />
+    </Window.Resources>
+
+    <DockPanel Margin="20">
+        <StackPanel DockPanel.Dock="Top" >
+            <TextBlock Text="Tasks"
+                       FontSize="24"
+                       FontWeight="Bold"
+                       Margin="0,0,0,16" />
+        </StackPanel>
+
+        <!-- Todo list -->
+        <ScrollViewer>
+            <ItemsControl ItemsSource="{Binding Todos}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Background="#F5F5F5" CornerRadius="6" Margin="0,4"
+                                Padding="12,8">
+                            <Grid ColumnDefinitions="Auto,*,Auto">
+                                <CheckBox Grid.Column="0"
+                                          IsChecked="{Bindinjg IsCompleted}"
+                                          VerticalAlignment="Center" />
+                                <TextBlock Grid.Column="1"
+                                           Text="{Binding Title}"
+                                           VerticalAlignment="Center"
+                                           Margin="10,0"
+                                           FontSize="14"
+                                           TextDecorations="{Binding IsCompleted, Converter={StaticResource BoolToStrikethrough}}" />
+                                <Button Grid.Column="2"
+                                        Content="✕"
+                                        Command="{Binding $parent[Window].DataContext.DeleteTodoCommand}"
+                                        CommandParameter="{Binding}"
+                                        Foreground="Red"
+                                        Background="Transparent" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Spacing="10" Margin="0,0,0,16">
+            <TextBox Text="{Binding NewTodoText}"
+                     Watermark="Add a new task..."
+                     Width="360"
+                     Height="30"
+                     CornerRadius="10"
+                     BorderBrush="Transparent"
+                     Background="#d9d9d9"
+                     x:Name="InputBox" />
+            <Button Content="Add"
+                    x:Name="AddButton"
+                    Command="{Binding AddTodoCommand}"
+                    HorizontalAlignment="Stretch" />
+        </StackPanel>
+
+    </DockPanel>
+</Window>
