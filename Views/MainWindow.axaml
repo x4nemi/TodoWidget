@@ -51,7 +51,7 @@
 
             <!-- Todo list -->
             <ScrollViewer>
-                <ItemsControl ItemsSource="{Binding Todos}">
+                <ItemsControl x:Name="TodoList" ItemsSource="{Binding Todos}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <StackPanel Spacing="5"/>
@@ -59,7 +59,8 @@
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Grid ColumnDefinitions="*,Auto" VerticalAlignment="Center">
+                            <Grid ColumnDefinitions="*,Auto" VerticalAlignment="Center"
+                                  Background="Transparent">
                                 <TextBlock Grid.Column="0" VerticalAlignment="Center">
                                     <TextBlock.Text>
                                         <MultiBinding StringFormat="{}{0}. {1}">

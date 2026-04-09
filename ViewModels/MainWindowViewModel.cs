@@ -30,4 +30,15 @@ public partial class MainWindowViewModel : ObservableObject
 
     [RelayCommand]
     private void DeleteTodo(TodoItem item) => Todos.Remove(item);
+
+    public void MoveTodo(int oldIndex, int newIndex)
+    {
+        if (oldIndex < 0 || oldIndex >= Todos.Count || newIndex < 0 || newIndex >= Todos.Count || oldIndex == newIndex)
+            return;
+
+        Todos.Move(oldIndex, newIndex);
+
+        for (int i = 0; i < Todos.Count; i++)
+            Todos[i].Priority = i + 1;
+    }
 }
