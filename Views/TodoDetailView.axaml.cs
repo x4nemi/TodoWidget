@@ -2,9 +2,9 @@ using Avalonia.Controls;
 
 namespace TodoApp.Views;
 
-public partial class MainWindow : Window
+public partial class TodoDetailView : UserControl
 {
-    public MainWindow()
+    public TodoDetailView()
     {
         InitializeComponent();
     }

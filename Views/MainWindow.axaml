@@ -1,7 +1,7 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:TodoApp.ViewModels"
-        xmlns:conv="using:TodoApp.Converters"
+        xmlns:views="using:TodoApp.Views"
         x:Class="TodoApp.Views.MainWindow"
         Title="TodoApp" Width="300" Height="200"
         WindowStartupLocation="CenterScreen"
@@ -10,10 +10,6 @@
     <Window.DataContext>
         <vm:MainWindowViewModel />
     </Window.DataContext>
-
-    <Window.Resources>
-        <conv:BoolToStrikethroughConverter x:Key="BoolToStrikethrough" />
-    </Window.Resources>
 
     <Window.Styles>
         <Style Selector="Button /template/ ContentPresenter">
@@ -30,61 +26,14 @@
         </Style>
     </Window.Styles>
 
-    <DockPanel Margin="20" HorizontalAlignment="Stretch" VerticalAlignment="Center" >
-            <StackPanel DockPanel.Dock="Top" >
-                <TextBlock Text="Tasks"
-                           FontSize="24"
-                           FontWeight="Bold"
-                           Margin="0,0,0,16" />
-            </StackPanel>
-
-            <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Spacing="10" Margin="0,20,0,0" HorizontalAlignment="Right">
-                <TextBox Text="{Binding NewTodoText}"
-                    
-                    Watermark="Add a new task..."
-                    Height="30"
-                    CornerRadius="10"
-                    BorderBrush="Transparent"
-                    Background="Transparent"
-                    x:Name="InputBox" />
-            </StackPanel>
-
-            <!-- Todo list -->
-            <ScrollViewer>
-                <ItemsControl x:Name="TodoList" ItemsSource="{Binding Todos}">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel Spacing="5"/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Grid ColumnDefinitions="*,Auto" VerticalAlignment="Center"
-                                  Background="Transparent">
-                                <TextBlock Grid.Column="0" VerticalAlignment="Center">
-                                    <TextBlock.Text>
-                                        <MultiBinding StringFormat="{}{0}. {1}">
-                                            <Binding Path="Priority"/>
-                                            <Binding Path="Title"/>
-                                        </MultiBinding>
-                                    </TextBlock.Text>
-                                </TextBlock>
-                                <Button Grid.Column="1"
-                                        Content="✕"
-                                        Command="{Binding $parent[Window].DataContext.DeleteTodoCommand}"
-                                        CommandParameter="{Binding}"
-                                        Background="Transparent"
-                                        Foreground="#FF5555"
-                                        BorderBrush="#FF5555"
-                                        CornerRadius="100"
-                                        HorizontalAlignment="Right" FontSize="10" Padding="4,2,4,2"
-                                        />
-
-                            </Grid>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </ScrollViewer>
-
-    </DockPanel>
+    <ContentControl Content="{Binding CurrentPage}" Margin="20">
+        <ContentControl.DataTemplates>
+            <DataTemplate DataType="vm:TodoListViewModel">
+                <views:TodoListView />
+            </DataTemplate>
+            <DataTemplate DataType="vm:TodoDetailViewModel">
+                <views:TodoDetailView />
+            </DataTemplate>
+        </ContentControl.DataTemplates>
+    </ContentControl>
 </Window>

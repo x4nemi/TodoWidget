@@ -1,0 +1,67 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:TodoApp.ViewModels"
+             x:Class="TodoApp.Views.TodoListView"
+             x:DataType="vm:TodoListViewModel">
+
+    <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Center">
+        <StackPanel DockPanel.Dock="Top">
+            <TextBlock Text="Tasks"
+                       FontSize="24"
+                       FontWeight="Bold"
+                       Margin="0,0,0,16" />
+        </StackPanel>
+
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Spacing="10" Margin="0,20,0,0" HorizontalAlignment="Right">
+            <TextBox Text="{Binding NewTodoText}"
+                     Watermark="Add a new task..."
+                     Height="30"
+                     CornerRadius="10"
+                     BorderBrush="Transparent"
+                     Background="Transparent"
+                     x:Name="InputBox" />
+        </StackPanel>
+
+        <ScrollViewer>
+            <ItemsControl x:Name="TodoList" ItemsSource="{Binding Todos}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Spacing="5"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid ColumnDefinitions="*,Auto,Auto" VerticalAlignment="Center"
+                              Background="Transparent">
+                            <TextBlock Grid.Column="0" VerticalAlignment="Center">
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="{}{0}. {1}">
+                                        <Binding Path="Priority"/>
+                                        <Binding Path="Title"/>
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                            <Button Grid.Column="1"
+                                    Content="→"
+                                    Command="{Binding $parent[UserControl].DataContext.SelectItemCommand}"
+                                    CommandParameter="{Binding}"
+                                    Background="Transparent"
+                                    Foreground="White"
+                                    BorderBrush="Transparent"
+                                    HorizontalAlignment="Right" FontSize="10" Padding="4,2,4,2" />
+                            <Button Grid.Column="2"
+                                    Content="✕"
+                                    Command="{Binding $parent[UserControl].DataContext.DeleteTodoCommand}"
+                                    CommandParameter="{Binding}"
+                                    Background="Transparent"
+                                    Foreground="#FF5555"
+                                    BorderBrush="#FF5555"
+                                    CornerRadius="100"
+                                    HorizontalAlignment="Right" FontSize="10" Padding="4,2,4,2" />
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </DockPanel>
+</UserControl>

@@ -1,44 +1,25 @@
-using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using TodoApp.Models;
 
 namespace TodoApp.ViewModels;
 
 public partial class MainWindowViewModel : ObservableObject
 {
-    public ObservableCollection<TodoItem> Todos { get; } = new ObservableCollection<TodoItem>
-    {
-        new TodoItem { Title = "Buy groceries", Priority = 1 },
-        new TodoItem { Title = "Walk the dog", Priority = 2 },
-        new TodoItem { Title = "Finish project", Priority = 3 }
-    };
+    [ObservableProperty] private ObservableObject _currentPage;
 
-    [ObservableProperty]
-    [NotifyCanExecuteChangedFor(nameof(AddTodoCommand))]
-    private string _newTodoText = string.Empty;
+    public TodoListViewModel TodoList { get; }
 
-    [RelayCommand(CanExecute = nameof(CanAddTodo))]
-    private void AddTodo()
+    public MainWindowViewModel()
     {
-        var lastPriority = Todos.Count > 0 ? Todos.Max(t => t.Priority) : 0;
-        Todos.Add(new TodoItem { Title = NewTodoText.Trim(), Priority = lastPriority + 1 });
-        NewTodoText = string.Empty;
+        TodoList = new TodoListViewModel();
+        TodoList.OnSelectItem = NavigateToDetail;
+        _currentPage = TodoList;
     }
 
-    private bool CanAddTodo() => !string.IsNullOrWhiteSpace(NewTodoText);
-
-    [RelayCommand]
-    private void DeleteTodo(TodoItem item) => Todos.Remove(item);
-
-    public void MoveTodo(int oldIndex, int newIndex)
+    private void NavigateToDetail(TodoItem item)
     {
-        if (oldIndex < 0 || oldIndex >= Todos.Count || newIndex < 0 || newIndex >= Todos.Count || oldIndex == newIndex)
-            return;
-
-        Todos.Move(oldIndex, newIndex);
-
-        for (int i = 0; i < Todos.Count; i++)
-            Todos[i].Priority = i + 1;
+        var detail = new TodoDetailViewModel(item);
+        detail.OnGoBack = () => CurrentPage = TodoList;
+        CurrentPage = detail;
     }
 }

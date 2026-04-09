@@ -1,0 +1,31 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:TodoApp.ViewModels"
+             x:Class="TodoApp.Views.TodoDetailView"
+             x:DataType="vm:TodoDetailViewModel">
+
+    <StackPanel Spacing="16" VerticalAlignment="Center">
+        <Button Content="← Back"
+                Command="{Binding GoBackCommand}"
+                Background="Transparent"
+                BorderBrush="Transparent"
+                Padding="0" />
+
+        <TextBlock Text="Task Details"
+                   FontSize="24"
+                   FontWeight="Bold" />
+
+        <StackPanel Spacing="8">
+            <TextBlock Text="Title" FontWeight="SemiBold" Opacity="0.6" />
+            <TextBox Text="{Binding Item.Title}" />
+        </StackPanel>
+
+        <StackPanel Spacing="8">
+            <TextBlock Text="Priority" FontWeight="SemiBold" Opacity="0.6" />
+            <TextBox Text="{Binding Item.Priority}" />
+        </StackPanel>
+
+        <CheckBox Content="Completed"
+                  IsChecked="{Binding Item.IsCompleted}" />
+    </StackPanel>
+</UserControl>
